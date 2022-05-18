@@ -10,29 +10,43 @@ books = {
     "j.r.r. tolkien": ["the hobbit", "the lord of the rings", "the silmarillion"]
     }
 
-while True:
-    author_name = input("Enter author name: ").lower()
-    mode = input("[A]dd or [S]earch? ").upper()
-    if mode == 'S':
-        search_by = input("Search by [B]ook or [A]uthor? ").upper()
-        if search_by == 'A':
-            book_results = books.get(author_name, ["None"])
-            print(f"Books by {author_name}: ", ', '.join(sorted(book_results)))
-        elif search_by == 'B':
-            title = input("Enter title to search for: ")
-            for author, titles in books.items():
-                if title.lower() in titles:
-                    print(author.title(), "wrote", title)
-                    break
-        else:
-            print("Invalid term to search by!")
-    elif mode == 'A':
-        title = input("Enter title to add: ").lower()
-        if author_name in books:
-            books[author_name].append(title)
-        else:
-            books[author_name] = [title]
+def search(books_dict, mode, author_name = None, book_title = None):
+    if mode == 'A':
+        book_results = books_dict.get(author_name, ["None"])
+        return f"Books by {author_name}: {', '.join(sorted(book_results))}"
+    elif mode == 'B':
+        for author, titles in books_dict.items():
+                if book_title.lower() in titles:
+                    return f"{author.title()} wrote {book_title}"
+        return f"{book_title} not found"
     else:
-        print("Invalid mode")
-    if input("Continue? (Y/N): ").upper() == 'N':
-        break
+        return "Invalid search mode!"
+
+def add(books_dict, author_name, book_title):
+    if author_name in books_dict:
+        books_dict[author_name].append(book_title)
+    else:
+        books_dict[author_name] = [book_title]
+    return f"{book_title} added to dictionary!"
+
+def main():
+    while True:
+        author_name = input("Enter author name: ").lower()
+        mode = input("[A]dd or [S]earch? ").upper()
+        if mode == 'S':
+            search_by = input("Search by [B]ook or [A]uthor? ").upper()
+            if search_by == 'B':
+                title = input("Enter title to search for: ")
+                print(search(books, search_by, author_name, title))
+            else:
+                print(search(books, search_by, author_name))
+        elif mode == 'A':
+            title = input("Enter title to add: ").lower()
+            print(add(books, author_name, title))
+        else:
+            print("Invalid mode")
+        if input("Continue? (Y/N): ").upper() == 'N':
+            break
+
+if __name__ == '__main__':
+    main()
