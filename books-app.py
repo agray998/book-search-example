@@ -37,9 +37,9 @@ def main():
             search_by = input("Search by [B]ook or [A]uthor? ").upper()
             if search_by == 'B':
                 title = input("Enter title to search for: ")
-                print(search(books, search_by, title))
+                print(search(books, search_by, book_title = title))
             else:
-                print(search(books, search_by, author_name))
+                print(search(books, search_by, author_name = author_name))
         elif mode == 'A':
             title = input("Enter title to add: ").lower()
             print(add(books, author_name, title))
